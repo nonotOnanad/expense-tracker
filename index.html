@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clarity · Expense Tracker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===================== AUTH SCREEN ===================== -->
+  <div class="auth-screen" id="auth-screen">
+    <div class="auth-card">
+      <div class="brand">
+        <span class="brand-mark">💰</span>
+        <span class="brand-name">Clarity</span>
+      </div>
+      <p class="subtle">Track your spending, beautifully.</p>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-auth="login">Log In</button>
+        <button type="button" class="auth-tab" data-auth="signup">Sign Up</button>
+      </div>
+
+      <form id="auth-form">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="auth-email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="auth-password" required minlength="6" autocomplete="current-password" />
+        </div>
+
+        <p class="auth-error" id="auth-error" hidden></p>
+        <p class="auth-note" id="auth-note" hidden></p>
+
+        <button type="submit" class="btn btn-primary auth-submit" id="auth-submit">Log In</button>
+        <a href="#" class="auth-forgot" id="auth-forgot">Forgot password?</a>
+      </form>
+    </div>
+  </div>
+
+  <div class="app" id="app-root" hidden>
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">💰</span>
+        <span class="brand-name">Clarity</span>
+      </div>
+
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-view="dashboard">
+          <span class="tab-icon">🏠</span><span>Dashboard</span>
+        </button>
+        <button class="tab" data-view="history">
+          <span class="tab-icon">🧾</span><span>History</span>
+        </button>
+        <button class="tab" data-view="analysis">
+          <span class="tab-icon">📊</span><span>Analysis</span>
+        </button>
+        <button class="tab" data-view="budgets">
+          <span class="tab-icon">🎯</span><span>Budgets</span>
+        </button>
+      </nav>
+
+      <div class="topbar-actions">
+        <span class="user-email" id="user-email"></span>
+        <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+        <button class="icon-btn" id="logout-btn" title="Log out" aria-label="Log out">🚪</button>
+        <button class="btn btn-primary" id="open-add-expense">
+          <span>＋</span> Add Expense
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile bottom nav -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="bnav-item active" data-view="dashboard"><span>🏠</span><small>Home</small></button>
+      <button class="bnav-item" data-view="history"><span>🧾</span><small>History</small></button>
+      <button class="bnav-fab" id="open-add-expense-mobile"><span>＋</span></button>
+      <button class="bnav-item" data-view="analysis"><span>📊</span><small>Analysis</small></button>
+      <button class="bnav-item" data-view="budgets"><span>🎯</span><small>Budgets</small></button>
+    </nav>
+
+    <main class="content">
+
+      <!-- ===================== DASHBOARD ===================== -->
+      <section class="view active" id="view-dashboard">
+        <div class="view-head">
+          <div>
+            <h1 id="greeting">Welcome back 👋</h1>
+            <p class="subtle" id="today-date"></p>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card accent-violet">
+            <div class="stat-top">
+              <span class="stat-label">Today</span>
+              <span class="stat-icon">☀️</span>
+            </div>
+            <div class="stat-value" id="stat-today">$0.00</div>
+            <div class="stat-sub" id="stat-today-sub">No expenses yet</div>
+          </div>
+
+          <div class="stat-card accent-blue">
+            <div class="stat-top">
+              <span class="stat-label">This Week</span>
+              <span class="stat-icon">📅</span>
+            </div>
+            <div class="stat-value" id="stat-week">$0.00</div>
+            <div class="stat-sub" id="stat-week-sub">vs last week</div>
+          </div>
+
+          <div class="stat-card accent-teal">
+            <div class="stat-top">
+              <span class="stat-label">This Month</span>
+              <span class="stat-icon">🗓️</span>
+            </div>
+            <div class="stat-value" id="stat-month">$0.00</div>
+            <div class="stat-sub" id="stat-month-sub">vs last month</div>
+          </div>
+
+          <div class="stat-card accent-amber">
+            <div class="stat-top">
+              <span class="stat-label">Daily Average</span>
+              <span class="stat-icon">⚖️</span>
+            </div>
+            <div class="stat-value" id="stat-avg">$0.00</div>
+            <div class="stat-sub" id="stat-avg-sub">this month</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head">
+              <h2>Last 7 Days</h2>
+              <span class="subtle">Daily spending</span>
+            </div>
+            <div id="chart-week" class="chart-box"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h2>Where it goes</h2>
+              <span class="subtle">This month by category</span>
+            </div>
+            <div id="chart-donut-dash" class="chart-box donut-box"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Recent Transactions</h2>
+            <button class="link-btn" data-view-link="history">View all →</button>
+          </div>
+          <div id="recent-list" class="tx-list"></div>
+        </div>
+      </section>
+
+      <!-- ===================== HISTORY ===================== -->
+      <section class="view" id="view-history">
+        <div class="view-head">
+          <div>
+            <h1>Transaction History</h1>
+            <p class="subtle">Search, filter and manage every expense</p>
+          </div>
+        </div>
+
+        <div class="card filter-card">
+          <div class="filter-row">
+            <div class="field">
+              <label>Search</label>
+              <input type="text" id="filter-search" placeholder="Search description..." />
+            </div>
+            <div class="field">
+              <label>Category</label>
+              <select id="filter-category">
+                <option value="all">All categories</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>From</label>
+              <input type="date" id="filter-from" />
+            </div>
+            <div class="field">
+              <label>To</label>
+              <input type="date" id="filter-to" />
+            </div>
+            <div class="field field-btns">
+              <label>&nbsp;</label>
+              <div class="quick-range">
+                <button class="chip" data-range="7">7D</button>
+                <button class="chip" data-range="30">30D</button>
+                <button class="chip" data-range="all">All</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Results</h2>
+            <span class="subtle" id="history-summary">0 transactions · $0.00</span>
+          </div>
+          <div id="history-list" class="tx-list grouped"></div>
+          <div class="empty-state" id="history-empty" hidden>
+            <div class="empty-emoji">🔍</div>
+            <p>No transactions match your filters.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ANALYSIS ===================== -->
+      <section class="view" id="view-analysis">
+        <div class="view-head">
+          <div>
+            <h1>Spending Analysis</h1>
+            <p class="subtle">Understand your habits and spot trends</p>
+          </div>
+          <div class="period-switch" id="period-switch">
+            <button class="chip active" data-period="week">Week</button>
+            <button class="chip" data-period="month">Month</button>
+            <button class="chip" data-period="year">Year</button>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card metric-card">
+            <span class="stat-label">Total Spent</span>
+            <div class="stat-value" id="an-total">$0.00</div>
+            <div class="stat-sub" id="an-total-sub">vs previous period</div>
+          </div>
+          <div class="card metric-card">
+            <span class="stat-label">Top Category</span>
+            <div class="stat-value" id="an-top-cat">—</div>
+            <div class="stat-sub" id="an-top-cat-sub">&nbsp;</div>
+          </div>
+          <div class="card metric-card">
+            <span class="stat-label">Avg per Transaction</span>
+            <div class="stat-value" id="an-avg-tx">$0.00</div>
+            <div class="stat-sub" id="an-avg-tx-sub">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head">
+              <h2>Spending Trend</h2>
+              <span class="subtle" id="trend-label">Daily totals</span>
+            </div>
+            <div id="chart-trend" class="chart-box"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h2>Category Breakdown</h2>
+              <span class="subtle">Share of total spend</span>
+            </div>
+            <div id="chart-donut-analysis" class="chart-box donut-box"></div>
+            <div id="legend-analysis" class="legend"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>💡 Insights</h2>
+            <span class="subtle">Personalized observations</span>
+          </div>
+          <div id="insights-list" class="insights-list"></div>
+        </div>
+      </section>
+
+      <!-- ===================== BUDGETS ===================== -->
+      <section class="view" id="view-budgets">
+        <div class="view-head">
+          <div>
+            <h1>Monthly Budgets</h1>
+            <p class="subtle">Set spending goals per category and track progress</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Overall Budget</h2>
+            <span class="subtle" id="overall-budget-sub"></span>
+          </div>
+          <div class="field" style="max-width: 220px;">
+            <label>Total monthly budget</label>
+            <input type="number" id="overall-budget-input" min="0" step="0.01" placeholder="e.g. 1500" />
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill" id="overall-progress-fill"></div></div>
+            <div class="progress-text" id="overall-progress-text"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Category Budgets</h2>
+            <span class="subtle">This month</span>
+          </div>
+          <div id="budget-list" class="budget-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Data Management</h2>
+            <span class="subtle">Securely stored in your account</span>
+          </div>
+          <div class="data-actions">
+            <button class="btn btn-secondary" id="export-data">⬇ Export data (JSON)</button>
+            <label class="btn btn-secondary file-btn">
+              ⬆ Import data
+              <input type="file" id="import-data" accept="application/json" hidden />
+            </label>
+            <button class="btn btn-danger" id="clear-data">🗑 Clear all data</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===================== ADD/EDIT EXPENSE MODAL ===================== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="modal-title">Add Expense</h2>
+        <button class="icon-btn" id="modal-close" aria-label="Close">✕</button>
+      </div>
+      <form id="expense-form">
+        <input type="hidden" id="expense-id" />
+        <div class="field">
+          <label>Amount</label>
+          <div class="amount-input">
+            <span>$</span>
+            <input type="number" id="expense-amount" min="0" step="0.01" placeholder="0.00" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Category</label>
+          <div class="category-grid" id="category-grid"></div>
+          <input type="hidden" id="expense-category" />
+        </div>
+
+        <div class="field">
+          <label>Description</label>
+          <input type="text" id="expense-description" placeholder="e.g. Lunch with team" />
+        </div>
+
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="expense-date" required />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="delete-expense" hidden>Delete</button>
+          <button type="submit" class="btn btn-primary">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
