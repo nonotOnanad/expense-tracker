@@ -78,15 +78,15 @@ function formatLongDate(date) {
 /* ===================== Formatting ===================== */
 function formatCurrency(amount) {
   const n = Number(amount) || 0;
-  return "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return "₱" + n.toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function formatCompactCurrency(amount) {
   const n = Number(amount) || 0;
   if (Math.abs(n) >= 1000) {
-    return "$" + (n / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 }) + "k";
+    return "₱" + (n / 1000).toLocaleString("en-PH", { maximumFractionDigits: 1 }) + "k";
   }
-  return "$" + n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+  return "₱" + n.toLocaleString("en-PH", { maximumFractionDigits: 0 });
 }
 
 function percentChange(current, previous) {

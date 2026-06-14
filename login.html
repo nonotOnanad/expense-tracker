@@ -7,293 +7,560 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg:        #f3f4fb;
-    --card:      #ffffff;
-    --text:      #1e2233;
-    --muted:     #767e94;
-    --border:    #e6e8f3;
-    --primary:   #6366f1;
-    --primary-h: #4f46e5;
-    --danger:    #ef4444;
-    --success:   #10b981;
-    --shadow:    0 2px 4px rgba(30,34,51,.04), 0 12px 36px rgba(30,34,51,.08);
-  }
+:root {
+  --indigo:    #6366f1;
+  --indigo-d:  #4338ca;
+  --violet:    #7c3aed;
+  --purple:    #9333ea;
+  --text:      #1e1b4b;
+  --muted:     #6b7280;
+  --border:    #e5e7eb;
+  --bg:        #f8f7ff;
+  --card:      #ffffff;
+  --danger:    #ef4444;
+  --success:   #10b981;
+  --inp-bg:    #f3f4f6;
+}
 
-  html, body {
-    height: 100%;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-  }
+html, body {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* ── Full-page split layout ── */
-  .login-page {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
+/* ══════════════════════════════════════════
+   PAGE SHELL
+══════════════════════════════════════════ */
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+}
 
-  /* LEFT — brand hero */
-  .hero {
-    background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 60%, #a855f7 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    color: #fff;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-  .hero-content { position: relative; z-index: 1; }
-  .hero-mark { font-size: 4rem; margin-bottom: 1rem; display: block; }
-  .hero-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 2.4rem;
-    font-weight: 800;
-    line-height: 1.15;
-    margin-bottom: 1rem;
-  }
-  .hero-sub {
-    font-size: 1rem;
-    opacity: 0.8;
-    line-height: 1.6;
-    max-width: 320px;
-  }
-  .hero-features {
-    margin-top: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    text-align: left;
-    width: 100%;
-    max-width: 300px;
-  }
-  .hero-feature {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: rgba(255,255,255,0.12);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-  .hero-feature span { font-size: 1.25rem; }
+/* ══════════════════════════════════════════
+   LEFT HERO PANEL
+══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  background: linear-gradient(155deg, #312e81 0%, #4c1d95 35%, #6d28d9 65%, #7c3aed 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 3.5rem;
+  overflow: hidden;
+  color: #fff;
+}
 
-  /* RIGHT — login form */
+/* Decorative blobs */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(167,139,250,.35) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -60px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(99,102,241,.3) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Grid dots watermark */
+.hero-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.hero-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: auto;
+}
+.hero-logo { font-size: 1.6rem; }
+.hero-brand {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.hero-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #e0e7ff;
+  width: fit-content;
+  margin-bottom: 1.25rem;
+}
+.hero-tag-dot {
+  width: 6px; height: 6px;
+  background: #34d399;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .5; transform: scale(1.4); }
+}
+
+.hero-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2rem, 3vw, 2.9rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.1rem;
+}
+.hero-heading em {
+  font-style: normal;
+  background: linear-gradient(90deg, #a5b4fc, #e879f9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,.72);
+  max-width: 360px;
+  margin-bottom: 2.5rem;
+}
+
+/* Feature pills */
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  padding: 0.85rem 1.1rem;
+  backdrop-filter: blur(4px);
+  transition: background .2s;
+}
+.feature:hover { background: rgba(255,255,255,.14); }
+.feature-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.fi-green  { background: rgba(52,211,153,.2); }
+.fi-blue   { background: rgba(96,165,250,.2); }
+.fi-orange { background: rgba(251,191,36,.2); }
+.feature-text strong { display: block; font-size: .9rem; font-weight: 700; color: #fff; }
+.feature-text span   { font-size: .8rem; color: rgba(255,255,255,.6); }
+
+/* Stats row */
+.hero-stats {
+  position: relative; z-index: 1;
+  display: flex; gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.stat-item { }
+.stat-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem; font-weight: 900;
+  color: #fff;
+}
+.stat-lbl { font-size: .75rem; color: rgba(255,255,255,.55); font-weight: 600; margin-top: .1rem; }
+
+/* ══════════════════════════════════════════
+   RIGHT FORM PANEL
+══════════════════════════════════════════ */
+.form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  background: var(--card);
+}
+
+.form-box { width: 100%; max-width: 390px; }
+
+.form-header { margin-bottom: 2rem; }
+.form-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--indigo);
+  margin-bottom: 0.5rem;
+}
+.form-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+}
+.form-sub { font-size: .9rem; color: var(--muted); line-height: 1.5; }
+
+/* Mode tabs */
+.mode-tabs {
+  display: flex;
+  background: var(--inp-bg);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 1.75rem;
+}
+.mode-tab {
+  flex: 1;
+  padding: .55rem;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s;
+}
+.mode-tab.active {
+  background: var(--card);
+  color: var(--indigo);
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+
+/* Fields */
+.field { margin-bottom: 1.1rem; }
+.field label {
+  display: block;
+  font-size: .72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-bottom: .45rem;
+}
+.input-wrap { position: relative; }
+.input-icon {
+  position: absolute;
+  left: 13px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  pointer-events: none;
+  opacity: .45;
+}
+.field input {
+  width: 100%;
+  padding: .78rem 1rem .78rem 2.6rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--inp-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: .95rem;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.field input:focus {
+  outline: none;
+  border-color: var(--indigo);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.12);
+}
+
+/* Message banners */
+.msg {
+  border-radius: 10px;
+  padding: .65rem .9rem;
+  font-size: .84rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+}
+.msg-error { color: #991b1b; background: #fee2e2; border: 1px solid #fca5a5; }
+.msg-note  { color: #065f46; background: #d1fae5; border: 1px solid #6ee7b7; }
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  padding: .9rem;
+  background: linear-gradient(135deg, var(--indigo), var(--violet));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: .01em;
+  transition: opacity .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 14px rgba(99,102,241,.4);
+  margin-top: .25rem;
+  position: relative;
+  overflow: hidden;
+}
+.btn-submit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15), transparent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.btn-submit:hover { box-shadow: 0 6px 20px rgba(99,102,241,.5); }
+.btn-submit:hover::after { opacity: 1; }
+.btn-submit:active { transform: scale(.98); }
+.btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+/* Forgot link */
+.forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: .3rem;
+  margin-bottom: .1rem;
+}
+.forgot-link {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--indigo);
+  text-decoration: none;
+  opacity: .8;
+}
+.forgot-link:hover { opacity: 1; text-decoration: underline; }
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: .75rem;
+  margin: 1.5rem 0;
+  color: var(--muted); font-size: .78rem; font-weight: 600;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+
+/* Panel toggle */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Footer trust line */
+.trust {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  font-size: .75rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════
+   MOBILE
+══════════════════════════════════════════ */
+@media (max-width: 820px) {
+  .page { grid-template-columns: 1fr; }
+  .hero { display: none; }
   .form-side {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 2rem;
+    padding: 2.5rem 1.5rem;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding-top: 3rem;
   }
-  .login-card {
-    width: 100%;
-    max-width: 400px;
-  }
-  .login-card h1 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.85rem;
-    font-weight: 800;
-    margin-bottom: 0.35rem;
-  }
-  .login-card .sub {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-bottom: 2rem;
-  }
-
-  .field { margin-bottom: 1.15rem; }
-  .field label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.45rem;
-  }
-  .field input {
-    width: 100%;
-    padding: 0.78rem 1rem;
-    border-radius: 12px;
-    border: 1.5px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.95rem;
-    transition: border-color 0.2s;
-  }
-  .field input:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: #fff;
-  }
-
-  .msg {
-    border-radius: 10px;
-    padding: 0.65rem 0.9rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-  .msg-error { color: var(--danger); background: rgba(239,68,68,0.1); }
-  .msg-note  { color: var(--success); background: rgba(16,185,129,0.1); }
-
-  .btn-login {
-    width: 100%;
-    padding: 0.85rem;
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-    margin-top: 0.25rem;
-  }
-  .btn-login:hover  { background: var(--primary-h); }
-  .btn-login:active { transform: scale(0.98); }
-  .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .forgot-link {
-    display: block;
-    text-align: center;
-    margin-top: 1.1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--primary);
-    text-decoration: none;
-  }
-  .forgot-link:hover { text-decoration: underline; }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin: 1.5rem 0;
-    color: var(--muted);
-    font-size: 0.8rem;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .signup-prompt {
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--muted);
-  }
-  .signup-prompt a {
-    color: var(--primary);
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .signup-prompt a:hover { text-decoration: underline; }
-
-  /* Signup panel (hidden by default) */
-  .signup-panel { display: none; }
-  .signup-panel.active { display: block; }
-  .login-panel.hidden { display: none; }
-
-  /* Mobile: stack vertically, hide hero */
-  @media (max-width: 768px) {
-    .login-page { grid-template-columns: 1fr; }
-    .hero { display: none; }
-    .form-side { padding: 2rem 1.25rem; }
-  }
+}
 </style>
 </head>
 <body>
 
-<div class="login-page">
+<div class="page">
 
-  <!-- LEFT: Hero -->
+  <!-- ═══ LEFT: HERO ═══ -->
   <div class="hero">
-    <div class="hero-content">
-      <span class="hero-mark">💰</span>
-      <h1 class="hero-title">Take control of your spending</h1>
-      <p class="hero-sub">Clarity helps you track every peso, spot trends, and hit your budget goals — beautifully.</p>
-      <div class="hero-features">
-        <div class="hero-feature"><span>📊</span> Visual spending analysis</div>
-        <div class="hero-feature"><span>🎯</span> Category budget tracking</div>
-        <div class="hero-feature"><span>🔒</span> Your data, private to you</div>
+    <div class="hero-dots"></div>
+
+    <div class="hero-top">
+      <span class="hero-logo">💰</span>
+      <span class="hero-brand">Clarity</span>
+    </div>
+
+    <div class="hero-body">
+      <div class="hero-tag">
+        <div class="hero-tag-dot"></div>
+        Personal Finance Tracker
+      </div>
+
+      <h1 class="hero-heading">
+        Spend smarter.<br>
+        Save <em>better.</em><br>
+        Live freer.
+      </h1>
+
+      <p class="hero-sub">
+        Track every peso with Clarity — your personal expense tracker built for Filipinos. Beautiful insights, smart budgets, zero clutter.
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon fi-green">📊</div>
+          <div class="feature-text">
+            <strong>Visual Analysis</strong>
+            <span>See where your money goes at a glance</span>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon fi-blue">🎯</div>
+          <div class="feature-text">
+            <strong>Budget Goals</strong>
+            <span>Set limits per category and stay on track</span>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon fi-orange">🔒</div>
+          <div class="feature-text">
+            <strong>Private &amp; Secure</strong>
+            <span>Your data is yours — nobody else can see it</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">₱0</div>
+        <div class="stat-lbl">Cost to use</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-lbl">Private data</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10+</div>
+        <div class="stat-lbl">Categories</div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT: Form -->
+  <!-- ═══ RIGHT: FORM ═══ -->
   <div class="form-side">
-    <div class="login-card">
+    <div class="form-box">
 
-      <!-- LOGIN PANEL -->
-      <div class="login-panel" id="login-panel">
-        <h1>Welcome back</h1>
-        <p class="sub">Sign in to your Clarity account</p>
+      <!-- Mode tabs -->
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="tab-login"  type="button">Sign In</button>
+        <button class="mode-tab"        id="tab-signup" type="button">Create Account</button>
+      </div>
 
-        <form id="login-form">
+      <!-- ── LOGIN PANEL ── -->
+      <div class="panel active" id="panel-login">
+        <div class="form-header">
+          <div class="form-eyebrow">Welcome back</div>
+          <h1 class="form-title">Sign in to Clarity</h1>
+          <p class="form-sub">Enter your credentials to access your dashboard</p>
+        </div>
+
+        <form id="login-form" autocomplete="on">
           <div class="field">
-            <label>Email</label>
-            <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email" />
+            <label>Email address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email" />
+            </div>
           </div>
           <div class="field">
             <label>Password</label>
-            <input type="password" id="login-password" placeholder="••••••••" required minlength="6" autocomplete="current-password" />
+            <div class="input-wrap">
+              <span class="input-icon">🔑</span>
+              <input type="password" id="login-password" placeholder="••••••••" required minlength="6" autocomplete="current-password" />
+            </div>
+          </div>
+
+          <div class="forgot-row">
+            <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
           </div>
 
           <p class="msg msg-error" id="login-error" hidden></p>
           <p class="msg msg-note"  id="login-note"  hidden></p>
 
-          <button type="submit" class="btn-login" id="login-submit">Sign In</button>
-          <a href="#" class="forgot-link" id="forgot-link">Forgot your password?</a>
+          <button type="submit" class="btn-submit" id="login-submit">Sign In →</button>
         </form>
 
-        <div class="divider">or</div>
-        <p class="signup-prompt">Don't have an account? <a href="#" id="show-signup">Create one</a></p>
+        <div class="trust">🔒 Secured with Supabase Auth · Your data is encrypted</div>
       </div>
 
-      <!-- SIGNUP PANEL -->
-      <div class="signup-panel" id="signup-panel">
-        <h1>Create account</h1>
-        <p class="sub">Start tracking your expenses today</p>
+      <!-- ── SIGNUP PANEL ── -->
+      <div class="panel" id="panel-signup">
+        <div class="form-header">
+          <div class="form-eyebrow">Get started free</div>
+          <h1 class="form-title">Create your account</h1>
+          <p class="form-sub">Start tracking your expenses in seconds</p>
+        </div>
 
-        <form id="signup-form">
+        <form id="signup-form" autocomplete="on">
           <div class="field">
-            <label>Email</label>
-            <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email" />
+            <label>Email address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email" />
+            </div>
           </div>
           <div class="field">
             <label>Password</label>
-            <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password" />
+            <div class="input-wrap">
+              <span class="input-icon">🔑</span>
+              <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password" />
+            </div>
           </div>
 
           <p class="msg msg-error" id="signup-error" hidden></p>
           <p class="msg msg-note"  id="signup-note"  hidden></p>
 
-          <button type="submit" class="btn-login" id="signup-submit">Create Account</button>
+          <button type="submit" class="btn-submit" id="signup-submit">Create Account →</button>
         </form>
 
-        <div class="divider">or</div>
-        <p class="signup-prompt">Already have an account? <a href="#" id="show-login">Sign in</a></p>
+        <div class="trust">🆓 Free to use · No credit card required</div>
       </div>
 
     </div>
@@ -303,103 +570,101 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-config.js"></script>
 <script>
-  // If already logged in, go straight to dashboard
+  /* ── Already logged in? go to dashboard ── */
   supabaseClient.auth.getSession().then(({ data: { session } }) => {
     if (session) window.location.replace('index.html');
   });
 
-  // Handle PASSWORD_RECOVERY redirect (reset email link lands here)
   supabaseClient.auth.onAuthStateChange((event, session) => {
     if (event === 'PASSWORD_RECOVERY') {
-      // Pass token to index.html which handles the reset modal
       window.location.replace('index.html#recovery');
       return;
     }
-    if (session) {
-      window.location.replace('index.html');
-    }
+    if (session) window.location.replace('index.html');
   });
 
-  /* ── Panel switching ── */
-  const loginPanel  = document.getElementById('login-panel');
-  const signupPanel = document.getElementById('signup-panel');
+  /* ── Tab switching ── */
+  const tabLogin  = document.getElementById('tab-login');
+  const tabSignup = document.getElementById('tab-signup');
+  const panelLogin  = document.getElementById('panel-login');
+  const panelSignup = document.getElementById('panel-signup');
 
-  document.getElementById('show-signup').addEventListener('click', e => {
-    e.preventDefault();
-    loginPanel.classList.add('hidden');
-    signupPanel.classList.add('active');
+  tabLogin.addEventListener('click', () => {
+    tabLogin.classList.add('active');    tabSignup.classList.remove('active');
+    panelLogin.classList.add('active');  panelSignup.classList.remove('active');
   });
-  document.getElementById('show-login').addEventListener('click', e => {
-    e.preventDefault();
-    signupPanel.classList.remove('active');
-    loginPanel.classList.remove('hidden');
+  tabSignup.addEventListener('click', () => {
+    tabSignup.classList.add('active');   tabLogin.classList.remove('active');
+    panelSignup.classList.add('active'); panelLogin.classList.remove('active');
+    setTimeout(() => document.getElementById('signup-email').focus(), 50);
   });
+
+  /* ── Helper ── */
+  function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'msg msg-' + type;
+    el.hidden = false;
+  }
+  function hideMsg(id) { document.getElementById(id).hidden = true; }
 
   /* ── Login ── */
   document.getElementById('login-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const email    = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    const btn      = document.getElementById('login-submit');
-    const errEl    = document.getElementById('login-error');
-    const noteEl   = document.getElementById('login-note');
-
-    errEl.hidden = true; noteEl.hidden = true;
+    hideMsg('login-error'); hideMsg('login-note');
+    const btn = document.getElementById('login-submit');
     btn.disabled = true; btn.textContent = 'Signing in…';
 
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email:    document.getElementById('login-email').value.trim(),
+      password: document.getElementById('login-password').value,
+    });
+
     if (error) {
-      errEl.textContent = error.message;
-      errEl.hidden = false;
-      btn.disabled = false; btn.textContent = 'Sign In';
+      showMsg('login-error', error.message, 'error');
+      btn.disabled = false; btn.textContent = 'Sign In →';
     }
-    // on success, onAuthStateChange fires and redirects
   });
 
   /* ── Sign up ── */
   document.getElementById('signup-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const email    = document.getElementById('signup-email').value.trim();
-    const password = document.getElementById('signup-password').value;
-    const btn      = document.getElementById('signup-submit');
-    const errEl    = document.getElementById('signup-error');
-    const noteEl   = document.getElementById('signup-note');
-
-    errEl.hidden = true; noteEl.hidden = true;
+    hideMsg('signup-error'); hideMsg('signup-note');
+    const btn = document.getElementById('signup-submit');
     btn.disabled = true; btn.textContent = 'Creating account…';
 
-    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+    const { data, error } = await supabaseClient.auth.signUp({
+      email:    document.getElementById('signup-email').value.trim(),
+      password: document.getElementById('signup-password').value,
+    });
+
     if (error) {
-      errEl.textContent = error.message;
-      errEl.hidden = false;
-      btn.disabled = false; btn.textContent = 'Create Account';
+      showMsg('signup-error', error.message, 'error');
+      btn.disabled = false; btn.textContent = 'Create Account →';
     } else if (data.user && !data.session) {
-      noteEl.textContent = 'Account created! Check your email to confirm, then sign in.';
-      noteEl.hidden = false;
-      btn.disabled = false; btn.textContent = 'Create Account';
+      showMsg('signup-note', 'Account created! Check your email to confirm, then sign in.', 'note');
+      btn.disabled = false; btn.textContent = 'Create Account →';
     }
-    // if email confirm is off, onAuthStateChange fires and redirects
+    // if email confirm is off, onAuthStateChange fires → redirect
   });
 
   /* ── Forgot password ── */
   document.getElementById('forgot-link').addEventListener('click', async e => {
     e.preventDefault();
+    hideMsg('login-error'); hideMsg('login-note');
     const email = document.getElementById('login-email').value.trim();
-    const errEl = document.getElementById('login-error');
-    const noteEl = document.getElementById('login-note');
 
     if (!email) {
-      errEl.textContent = 'Enter your email above first, then click "Forgot your password?"';
-      errEl.hidden = false;
+      showMsg('login-error', 'Enter your email address above first, then click "Forgot password?"', 'error');
       return;
     }
-    errEl.hidden = true; noteEl.hidden = true;
 
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + '/index.html',
     });
-    if (error) { errEl.textContent = error.message; errEl.hidden = false; }
-    else { noteEl.textContent = 'Password reset email sent! Check your inbox.'; noteEl.hidden = false; }
+
+    if (error) showMsg('login-error', error.message, 'error');
+    else showMsg('login-note', '📬 Password reset email sent! Check your inbox.', 'note');
   });
 </script>
 </body>
