@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clarity · Sign In</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #f3f4fb;
+    --card:      #ffffff;
+    --text:      #1e2233;
+    --muted:     #767e94;
+    --border:    #e6e8f3;
+    --primary:   #6366f1;
+    --primary-h: #4f46e5;
+    --danger:    #ef4444;
+    --success:   #10b981;
+    --shadow:    0 2px 4px rgba(30,34,51,.04), 0 12px 36px rgba(30,34,51,.08);
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* ── Full-page split layout ── */
+  .login-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* LEFT — brand hero */
+  .hero {
+    background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 60%, #a855f7 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-mark { font-size: 4rem; margin-bottom: 1rem; display: block; }
+  .hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero-sub {
+    font-size: 1rem;
+    opacity: 0.8;
+    line-height: 1.6;
+    max-width: 320px;
+  }
+  .hero-features {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+  }
+  .hero-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .hero-feature span { font-size: 1.25rem; }
+
+  /* RIGHT — login form */
+  .form-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+  }
+  .login-card h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.85rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+  }
+  .login-card .sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .field { margin-bottom: 1.15rem; }
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.45rem;
+  }
+  .field input {
+    width: 100%;
+    padding: 0.78rem 1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #fff;
+  }
+
+  .msg {
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .msg-error { color: var(--danger); background: rgba(239,68,68,0.1); }
+  .msg-note  { color: var(--success); background: rgba(16,185,129,0.1); }
+
+  .btn-login {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 0.25rem;
+  }
+  .btn-login:hover  { background: var(--primary-h); }
+  .btn-login:active { transform: scale(0.98); }
+  .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .forgot-link {
+    display: block;
+    text-align: center;
+    margin-top: 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .forgot-link:hover { text-decoration: underline; }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .signup-prompt {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .signup-prompt a {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .signup-prompt a:hover { text-decoration: underline; }
+
+  /* Signup panel (hidden by default) */
+  .signup-panel { display: none; }
+  .signup-panel.active { display: block; }
+  .login-panel.hidden { display: none; }
+
+  /* Mobile: stack vertically, hide hero */
+  @media (max-width: 768px) {
+    .login-page { grid-template-columns: 1fr; }
+    .hero { display: none; }
+    .form-side { padding: 2rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="login-page">
+
+  <!-- LEFT: Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <span class="hero-mark">💰</span>
+      <h1 class="hero-title">Take control of your spending</h1>
+      <p class="hero-sub">Clarity helps you track every peso, spot trends, and hit your budget goals — beautifully.</p>
+      <div class="hero-features">
+        <div class="hero-feature"><span>📊</span> Visual spending analysis</div>
+        <div class="hero-feature"><span>🎯</span> Category budget tracking</div>
+        <div class="hero-feature"><span>🔒</span> Your data, private to you</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="form-side">
+    <div class="login-card">
+
+      <!-- LOGIN PANEL -->
+      <div class="login-panel" id="login-panel">
+        <h1>Welcome back</h1>
+        <p class="sub">Sign in to your Clarity account</p>
+
+        <form id="login-form">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required minlength="6" autocomplete="current-password" />
+          </div>
+
+          <p class="msg msg-error" id="login-error" hidden></p>
+          <p class="msg msg-note"  id="login-note"  hidden></p>
+
+          <button type="submit" class="btn-login" id="login-submit">Sign In</button>
+          <a href="#" class="forgot-link" id="forgot-link">Forgot your password?</a>
+        </form>
+
+        <div class="divider">or</div>
+        <p class="signup-prompt">Don't have an account? <a href="#" id="show-signup">Create one</a></p>
+      </div>
+
+      <!-- SIGNUP PANEL -->
+      <div class="signup-panel" id="signup-panel">
+        <h1>Create account</h1>
+        <p class="sub">Start tracking your expenses today</p>
+
+        <form id="signup-form">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password" />
+          </div>
+
+          <p class="msg msg-error" id="signup-error" hidden></p>
+          <p class="msg msg-note"  id="signup-note"  hidden></p>
+
+          <button type="submit" class="btn-login" id="signup-submit">Create Account</button>
+        </form>
+
+        <div class="divider">or</div>
+        <p class="signup-prompt">Already have an account? <a href="#" id="show-login">Sign in</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script>
+  // If already logged in, go straight to dashboard
+  supabaseClient.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.replace('index.html');
+  });
+
+  // Handle PASSWORD_RECOVERY redirect (reset email link lands here)
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      // Pass token to index.html which handles the reset modal
+      window.location.replace('index.html#recovery');
+      return;
+    }
+    if (session) {
+      window.location.replace('index.html');
+    }
+  });
+
+  /* ── Panel switching ── */
+  const loginPanel  = document.getElementById('login-panel');
+  const signupPanel = document.getElementById('signup-panel');
+
+  document.getElementById('show-signup').addEventListener('click', e => {
+    e.preventDefault();
+    loginPanel.classList.add('hidden');
+    signupPanel.classList.add('active');
+  });
+  document.getElementById('show-login').addEventListener('click', e => {
+    e.preventDefault();
+    signupPanel.classList.remove('active');
+    loginPanel.classList.remove('hidden');
+  });
+
+  /* ── Login ── */
+  document.getElementById('login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const btn      = document.getElementById('login-submit');
+    const errEl    = document.getElementById('login-error');
+    const noteEl   = document.getElementById('login-note');
+
+    errEl.hidden = true; noteEl.hidden = true;
+    btn.disabled = true; btn.textContent = 'Signing in…';
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) {
+      errEl.textContent = error.message;
+      errEl.hidden = false;
+      btn.disabled = false; btn.textContent = 'Sign In';
+    }
+    // on success, onAuthStateChange fires and redirects
+  });
+
+  /* ── Sign up ── */
+  document.getElementById('signup-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const email    = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const btn      = document.getElementById('signup-submit');
+    const errEl    = document.getElementById('signup-error');
+    const noteEl   = document.getElementById('signup-note');
+
+    errEl.hidden = true; noteEl.hidden = true;
+    btn.disabled = true; btn.textContent = 'Creating account…';
+
+    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+    if (error) {
+      errEl.textContent = error.message;
+      errEl.hidden = false;
+      btn.disabled = false; btn.textContent = 'Create Account';
+    } else if (data.user && !data.session) {
+      noteEl.textContent = 'Account created! Check your email to confirm, then sign in.';
+      noteEl.hidden = false;
+      btn.disabled = false; btn.textContent = 'Create Account';
+    }
+    // if email confirm is off, onAuthStateChange fires and redirects
+  });
+
+  /* ── Forgot password ── */
+  document.getElementById('forgot-link').addEventListener('click', async e => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const errEl = document.getElementById('login-error');
+    const noteEl = document.getElementById('login-note');
+
+    if (!email) {
+      errEl.textContent = 'Enter your email above first, then click "Forgot your password?"';
+      errEl.hidden = false;
+      return;
+    }
+    errEl.hidden = true; noteEl.hidden = true;
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/index.html',
+    });
+    if (error) { errEl.textContent = error.message; errEl.hidden = false; }
+    else { noteEl.textContent = 'Password reset email sent! Check your inbox.'; noteEl.hidden = false; }
+  });
+</script>
+</body>
+</html>

@@ -1,10 +1,7 @@
 /* ===================== Auth state ===================== */
 let currentUser = null;
-let authMode = "login";
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupAuthTabs();
-  setupAuthForm();
   setupResetPasswordModal();
   document.getElementById("logout-btn").addEventListener("click", handleLogout);
   document.getElementById("change-password-btn").addEventListener("click", () => openResetModal(false));
@@ -12,8 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   supabaseClient.auth.onAuthStateChange((_event, session) => {
     currentUser = session ? session.user : null;
 
-    // Supabase fires PASSWORD_RECOVERY when user arrives via reset email link
+    // Password recovery link lands on index.html with #recovery hash
     if (_event === "PASSWORD_RECOVERY") {
+      hidePage();
       openResetModal(true);
       return;
     }
@@ -21,90 +19,36 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentUser) {
       showApp();
     } else {
-      showAuthScreen();
+      // Not logged in — redirect to login page
+      window.location.replace("login.html");
     }
   });
 });
 
-/* ===================== Tabs (Log In / Sign Up) ===================== */
-function setupAuthTabs() {
-  document.querySelectorAll(".auth-tab").forEach((tab) => {
-    tab.addEventListener("click", () => {
-      authMode = tab.dataset.auth;
-      document.querySelectorAll(".auth-tab").forEach((t) => t.classList.toggle("active", t === tab));
-      document.getElementById("auth-submit").textContent = authMode === "login" ? "Log In" : "Create Account";
-      hideAuthMessages();
-    });
-  });
+/* ===================== Show / hide app ===================== */
+function showApp() {
+  document.getElementById("page-loading").style.display = "none";
+  const root = document.getElementById("app-root");
+  root.style.display = "";
 
-  document.getElementById("auth-forgot").addEventListener("click", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("auth-email").value.trim();
-    if (!email) {
-      showAuthError("Enter your email above, then click 'Forgot password?' again.");
-      return;
-    }
-    hideAuthMessages();
-    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + window.location.pathname,
-    });
-    if (error) showAuthError(error.message);
-    else showAuthNote("Password reset email sent! Check your inbox and click the link.");
-  });
+  const emailEl = document.getElementById("user-email");
+  if (emailEl) emailEl.textContent = currentUser.email;
+
+  renderAll();
 }
 
-/* ===================== Login / Signup form ===================== */
-function setupAuthForm() {
-  document.getElementById("auth-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("auth-email").value.trim();
-    const password = document.getElementById("auth-password").value;
-    const submitBtn = document.getElementById("auth-submit");
-
-    hideAuthMessages();
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Please wait...";
-
-    try {
-      if (authMode === "login") {
-        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      } else {
-        const { data, error } = await supabaseClient.auth.signUp({ email, password });
-        if (error) throw error;
-        if (data.user && !data.session) {
-          showAuthNote("Account created! Check your email to confirm, then log in.");
-        }
-      }
-    } catch (err) {
-      showAuthError(err.message || "Something went wrong. Please try again.");
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = authMode === "login" ? "Log In" : "Create Account";
-    }
-  });
+function hidePage() {
+  document.getElementById("page-loading").style.display = "none";
+  document.getElementById("app-root").style.display = "none";
 }
 
-function showAuthError(msg) {
-  const el = document.getElementById("auth-error");
-  el.textContent = msg;
-  el.hidden = false;
-}
-
-function showAuthNote(msg) {
-  const el = document.getElementById("auth-note");
-  el.textContent = msg;
-  el.hidden = false;
-}
-
-function hideAuthMessages() {
-  document.getElementById("auth-error").hidden = true;
-  document.getElementById("auth-note").hidden = true;
+/* ===================== Logout ===================== */
+async function handleLogout() {
+  await supabaseClient.auth.signOut();
+  window.location.replace("login.html");
 }
 
 /* ===================== Reset / Change Password Modal ===================== */
-// isRecovery = true  → user arrived via email link (must update before entering app)
-// isRecovery = false → logged-in user wants to change their password
 function openResetModal(isRecovery) {
   const overlay = document.getElementById("reset-modal-overlay");
   const title   = document.getElementById("reset-modal-title");
@@ -144,7 +88,6 @@ function setupResetPasswordModal() {
 
   document.getElementById("reset-modal-close").addEventListener("click", closeResetModal);
   overlay.addEventListener("click", (e) => {
-    // Prevent closing if this is a recovery flow (user MUST set a password)
     if (e.target === overlay && overlay.dataset.recovery !== "1") closeResetModal();
   });
 
@@ -167,7 +110,7 @@ function setupResetPasswordModal() {
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = "Updating...";
+    submitBtn.textContent = "Updating…";
 
     try {
       const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
@@ -185,27 +128,4 @@ function setupResetPasswordModal() {
       submitBtn.textContent = "Update Password";
     }
   });
-}
-
-/* ===================== Logout ===================== */
-async function handleLogout() {
-  await supabaseClient.auth.signOut();
-}
-
-/* ===================== Screen toggling ===================== */
-function showApp() {
-  document.getElementById("auth-screen").hidden = true;
-  document.getElementById("app-root").hidden = false;
-
-  const emailEl = document.getElementById("user-email");
-  if (emailEl) emailEl.textContent = currentUser.email;
-
-  renderAll();
-}
-
-function showAuthScreen() {
-  document.getElementById("app-root").hidden = true;
-  document.getElementById("auth-screen").hidden = false;
-  document.getElementById("auth-form").reset();
-  hideAuthMessages();
 }

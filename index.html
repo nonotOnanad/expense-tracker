@@ -11,40 +11,10 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- ===================== AUTH SCREEN ===================== -->
-  <div class="auth-screen" id="auth-screen">
-    <div class="auth-card">
-      <div class="brand">
-        <span class="brand-mark">💰</span>
-        <span class="brand-name">Clarity</span>
-      </div>
-      <p class="subtle">Track your spending, beautifully.</p>
+  <!-- Loading guard — hidden until auth confirmed -->
+  <div id="page-loading" style="position:fixed;inset:0;background:var(--bg,#f3f4fb);display:flex;align-items:center;justify-content:center;z-index:9999;font-size:2rem;">💰</div>
 
-      <div class="auth-tabs">
-        <button type="button" class="auth-tab active" data-auth="login">Log In</button>
-        <button type="button" class="auth-tab" data-auth="signup">Sign Up</button>
-      </div>
-
-      <form id="auth-form">
-        <div class="field">
-          <label>Email</label>
-          <input type="email" id="auth-email" required autocomplete="email" />
-        </div>
-        <div class="field">
-          <label>Password</label>
-          <input type="password" id="auth-password" required minlength="6" autocomplete="current-password" />
-        </div>
-
-        <p class="auth-error" id="auth-error" hidden></p>
-        <p class="auth-note" id="auth-note" hidden></p>
-
-        <button type="submit" class="btn btn-primary auth-submit" id="auth-submit">Log In</button>
-        <a href="#" class="auth-forgot" id="auth-forgot">Forgot password?</a>
-      </form>
-    </div>
-  </div>
-
-  <div class="app" id="app-root" hidden>
+  <div class="app" id="app-root" style="display:none">
 
     <!-- Top bar -->
     <header class="topbar">
