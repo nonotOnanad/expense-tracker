@@ -71,6 +71,7 @@
       <div class="topbar-actions">
         <span class="user-email" id="user-email"></span>
         <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+        <button class="icon-btn" id="change-password-btn" title="Change password" aria-label="Change password">🔑</button>
         <button class="icon-btn" id="logout-btn" title="Log out" aria-label="Log out">🚪</button>
         <button class="btn btn-primary" id="open-add-expense">
           <span>＋</span> Add Expense
@@ -363,6 +364,31 @@
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" id="delete-expense" hidden>Delete</button>
           <button type="submit" class="btn btn-primary">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== RESET PASSWORD MODAL ===================== -->
+  <div class="modal-overlay" id="reset-modal-overlay">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="reset-modal-title">Set New Password</h2>
+        <button class="icon-btn" id="reset-modal-close" aria-label="Close">✕</button>
+      </div>
+      <form id="reset-password-form">
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="reset-new-password" minlength="6" placeholder="At least 6 characters" required autocomplete="new-password" />
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" id="reset-confirm-password" minlength="6" placeholder="Repeat new password" required autocomplete="new-password" />
+        </div>
+        <p class="auth-error" id="reset-error" hidden></p>
+        <p class="auth-note" id="reset-note" hidden></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="reset-submit">Update Password</button>
         </div>
       </form>
     </div>

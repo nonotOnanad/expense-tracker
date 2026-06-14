@@ -695,3 +695,18 @@ button { font-family: inherit; }
   .filter-row { flex-direction: column; align-items: stretch; }
   .field { min-width: 0; }
 }
+
+/* ===================== Reset Password Modal ===================== */
+#reset-modal-overlay .auth-error,
+#reset-modal-overlay .auth-note {
+  display: block;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+#reset-modal-overlay .auth-error { color: var(--danger); background: rgba(239,68,68,0.1); }
+#reset-modal-overlay .auth-note  { color: var(--success); background: rgba(16,185,129,0.1); }
+#reset-modal-overlay .modal { max-width: 400px; }
+#reset-modal-overlay .modal-actions { justify-content: flex-end; }
