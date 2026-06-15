@@ -1,25 +1,34 @@
 /* ===================== Auth state ===================== */
 let currentUser = null;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   setupResetPasswordModal();
   document.getElementById("logout-btn").addEventListener("click", handleLogout);
   document.getElementById("change-password-btn").addEventListener("click", () => openResetModal(false));
 
+  // ── Check session immediately on page load ──────────────────────────────
+  // onAuthStateChange alone misses existing sessions — getSession() covers it
+  const { data: { session: initialSession } } = await supabaseClient.auth.getSession();
+
+  if (initialSession) {
+    currentUser = initialSession.user;
+    showApp();
+  } else {
+    window.location.replace("/");
+    return; // stop — redirect in progress
+  }
+
+  // ── Listen for future auth changes (logout, token refresh, recovery) ────
   supabaseClient.auth.onAuthStateChange((_event, session) => {
     currentUser = session ? session.user : null;
 
-    // Password recovery link lands on index.html with #recovery hash
     if (_event === "PASSWORD_RECOVERY") {
       hidePage();
       openResetModal(true);
       return;
     }
 
-    if (currentUser) {
-      showApp();
-    } else {
-      // Not logged in — redirect to login page
+    if (_event === "SIGNED_OUT") {
       window.location.replace("/");
     }
   });
