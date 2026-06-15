@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showApp();
     } else {
       // Not logged in — redirect to login page
-      window.location.replace("login.html");
+      window.location.replace("/");
     }
   });
 });
@@ -45,7 +45,7 @@ function hidePage() {
 /* ===================== Logout ===================== */
 async function handleLogout() {
   await supabaseClient.auth.signOut();
-  window.location.replace("login.html");
+  window.location.replace("/");
 }
 
 /* ===================== Reset / Change Password Modal ===================== */

@@ -1,14 +1,20 @@
 {
+  "redirects": [
+    { "source": "/index.html", "destination": "/dashboard", "permanent": false }
+  ],
   "rewrites": [
-    { "source": "/", "destination": "/login.html" }
+    { "source": "/",          "destination": "/login.html"  },
+    { "source": "/dashboard", "destination": "/index.html"  }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "X-Content-Type-Options",  "value": "nosniff" },
+        { "key": "X-Frame-Options",         "value": "DENY" },
+        { "key": "Referrer-Policy",         "value": "strict-origin-when-cross-origin" },
+        { "key": "X-XSS-Protection",        "value": "1; mode=block" },
+        { "key": "Permissions-Policy",      "value": "camera=(), microphone=(), geolocation=()" }
       ]
     }
   ]

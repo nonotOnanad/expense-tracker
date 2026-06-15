@@ -572,15 +572,15 @@ html, body {
 <script>
   /* ── Already logged in? go to dashboard ── */
   supabaseClient.auth.getSession().then(({ data: { session } }) => {
-    if (session) window.location.replace('index.html');
+    if (session) window.location.replace(window.location.origin + '/dashboard');
   });
 
   supabaseClient.auth.onAuthStateChange((event, session) => {
     if (event === 'PASSWORD_RECOVERY') {
-      window.location.replace('index.html#recovery');
+      window.location.replace(window.location.origin + '/#recovery');
       return;
     }
-    if (session) window.location.replace('index.html');
+    if (session) window.location.replace(window.location.origin + '/dashboard');
   });
 
   /* ── Tab switching ── */
@@ -660,7 +660,7 @@ html, body {
     }
 
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + '/index.html',
+      redirectTo: window.location.origin + '/',
     });
 
     if (error) showMsg('login-error', error.message, 'error');
